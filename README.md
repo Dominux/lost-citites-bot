@@ -15,6 +15,8 @@ So the idea is to create a bot with hardcoded conditional scripts that should:
 
 **Since the idea of the game is to make it better than your foe by outperforming him by game points, the bot should generally act to maximise its success and to minimize its foe success**
 
+I assume that the game process is simple to crack with just computing probability and make some bad things for the foe. I guess creating conditional strategies manually is enough to create a great bot that will be nearly invincible.
+
 ## Repo components
 
 This repo is considered to be self-sufficient. The desired components are:
