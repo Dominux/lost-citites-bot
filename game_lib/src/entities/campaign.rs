@@ -1,26 +1,26 @@
-use std::hash::Hash;
-
 use crate::common::types::CampaignType;
 
 use super::card::Card;
 
 pub struct Campaign {
-    campaign_type: CampaignType,
-    player_1_route: Vec<Card>,
-    player_2_route: Vec<Card>,
-    free_cards: Vec<Card>,
+    pub(crate) campaign_type: CampaignType,
+    pub(crate) player_1_route: Vec<Card>,
+    pub(crate) player_2_route: Vec<Card>,
+    pub(crate) free_cards: Vec<Card>,
 }
 
-impl Hash for Campaign {
-    fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
-        self.campaign_type.hash(state);
+impl Campaign {
+    pub(crate) fn new(
+        campaign_type: CampaignType,
+        player_1_route: Vec<Card>,
+        player_2_route: Vec<Card>,
+        free_cards: Vec<Card>,
+    ) -> Self {
+        Self {
+            campaign_type,
+            player_1_route,
+            player_2_route,
+            free_cards,
+        }
     }
 }
-
-impl PartialEq for Campaign {
-    fn eq(&self, other: &Self) -> bool {
-        self.campaign_type == other.campaign_type
-    }
-}
-
-impl Eq for Campaign {}
