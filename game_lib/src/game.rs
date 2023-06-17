@@ -14,7 +14,7 @@ use crate::{
 };
 
 pub struct Game {
-    playground: Playground,
+    pub(crate) playground: Playground,
     turn: Player,
     player_1_hand: Vec<Card>,
     player_2_hand: Vec<Card>,
@@ -72,7 +72,7 @@ impl Game {
     pub fn make_move(
         &mut self,
         player: &Player,
-        card: &Card,
+        card_index: usize,
         move_type: MoveType,
         take_card_from: TakeCardFrom,
     ) -> GameResult<()> {
@@ -103,9 +103,16 @@ impl Game {
             Player::Player2 => &mut self.player_2_hand,
         };
 
+        let (card_type, campaign_type) = {
+            let card = players_hand
+                .get(card_index)
+                .ok_or(GameError::PlayerDoesNotHaveSuchCard)?;
+            (card.card_type(), card.campaign())
+        };
+
         // getting choosen campaign
         let campaign =
-            Self::get_campaign_by_type(&mut self.playground.campaigns, card.campaign()).unwrap(); // exactly we created campaign types inside cards
+            Self::get_campaign_by_type(&mut self.playground.campaigns, campaign_type).unwrap(); // exactly we created campaign types inside cards
 
         if matches!(move_type, MoveType::ContinueRoute) {
             // continuing route
@@ -116,7 +123,7 @@ impl Game {
 
             if let Some(last_card) = route.last() {
                 if let CardType::Rank(last_rank) = last_card.card_type() {
-                    if !matches!(card.card_type(), CardType::Rank(rank) if rank > last_rank) {
+                    if !matches!(card_type, CardType::Rank(rank) if rank > last_rank) {
                         // if last card in the route is ranked and has greater rank than the chosen card's one
                         return Err(GameError::LastCardHasGreaterRank);
                     }
@@ -124,7 +131,7 @@ impl Game {
             }
 
             // appending the card to the route
-            route.push(Self::take_card_by_ref(players_hand, card)?)
+            route.push(players_hand.swap_remove(card_index))
         } else {
             // making card free
 
@@ -137,7 +144,7 @@ impl Game {
             // appending the card to the free cards
             campaign
                 .free_cards
-                .push(Self::take_card_by_ref(players_hand, card)?)
+                .push(players_hand.swap_remove(card_index))
         }
 
         let new_card = match take_card_from {
@@ -155,17 +162,6 @@ impl Game {
         players_hand.push(new_card);
 
         Ok(())
-    }
-
-    #[inline]
-    fn take_card_by_ref(players_hand: &mut Vec<Card>, card: &Card) -> GameResult<Card> {
-        let card = players_hand.swap_remove(
-            players_hand
-                .iter()
-                .position(|players_card| *players_card == *card)
-                .ok_or(GameError::PlayerDoesNotHaveSuchCard)?,
-        );
-        Ok(card)
     }
 
     #[inline]
