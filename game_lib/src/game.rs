@@ -213,29 +213,29 @@ impl Game {
     }
 
     pub fn game_results(&self) -> GameInfoResults {
-        let (mut player_1_points, mut player_2_points) = (0, 0);
+        let (mut player_1_score, mut player_2_score) = (0, 0);
 
         for campaign in self.playground.campaigns.iter() {
-            for (route, players_points) in [
-                (&campaign.player_1_route, &mut player_1_points),
-                (&campaign.player_2_route, &mut player_2_points),
+            for (route, players_score) in [
+                (&campaign.player_1_route, &mut player_1_score),
+                (&campaign.player_2_route, &mut player_2_score),
             ] {
-                let (points, multiplier) =
-                    route.iter().fold((0, 1), |(points, multiplier), card| {
-                        match card.card_type() {
-                            CardType::HandShake => (points, multiplier + 1),
-                            CardType::Rank(rank) => (points + *rank as usize, multiplier),
-                        }
-                    });
+                let (score, multiplier) =
+                    route
+                        .iter()
+                        .fold((0, 1), |(score, multiplier), card| match card.card_type() {
+                            CardType::HandShake => (score, multiplier + 1),
+                            CardType::Rank(rank) => (score + *rank as isize, multiplier),
+                        });
 
                 // calculating route income
-                *players_points += points * multiplier - self.campaign_outcome;
+                *players_score += score * multiplier - self.campaign_outcome as isize;
             }
         }
 
         GameInfoResults {
-            player_1_points,
-            player_2_points,
+            player_1_score,
+            player_2_score,
         }
     }
 }

@@ -46,15 +46,15 @@ impl<'a> GameInfoCampaign<'a> {
 }
 
 pub struct GameInfoResults {
-    pub player_1_points: usize,
-    pub player_2_points: usize,
+    pub player_1_score: isize,
+    pub player_2_score: isize,
 }
 
 impl GameInfoResults {
-    pub(crate) fn new(player_1_points: usize, player_2_points: usize) -> Self {
+    pub(crate) fn new(player_1_score: isize, player_2_score: isize) -> Self {
         Self {
-            player_1_points,
-            player_2_points,
+            player_1_score,
+            player_2_score,
         }
     }
 }
