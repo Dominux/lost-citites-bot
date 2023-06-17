@@ -5,7 +5,12 @@ use crate::{
         types::{CampaignType, CardType, MoveType, Player, TakeCardFrom},
     },
     config::Config,
-    entities::{campaign::Campaign, card::Card, playground::Playground},
+    entities::{
+        campaign::Campaign,
+        card::Card,
+        game_info::{GameInfo, GameInfoCampaign, GameInfoResults},
+        playground::Playground,
+    },
 };
 
 pub struct Game {
@@ -13,6 +18,7 @@ pub struct Game {
     turn: Player,
     player_1_hand: Vec<Card>,
     player_2_hand: Vec<Card>,
+    campaign_outcome: usize,
 }
 
 impl Game {
@@ -56,9 +62,10 @@ impl Game {
 
         Self {
             playground,
-            turn: Player::Player_1,
+            turn: Player::Player1,
             player_1_hand,
             player_2_hand,
+            campaign_outcome: config.campaign_outcome,
         }
     }
 
@@ -92,8 +99,8 @@ impl Game {
         }
 
         let players_hand = match self.turn {
-            Player::Player_1 => &mut self.player_1_hand,
-            Player::Player_2 => &mut self.player_2_hand,
+            Player::Player1 => &mut self.player_1_hand,
+            Player::Player2 => &mut self.player_2_hand,
         };
 
         // getting choosen campaign
@@ -103,8 +110,8 @@ impl Game {
         if matches!(move_type, MoveType::ContinueRoute) {
             // continuing route
             let route = match player {
-                Player::Player_1 => &mut campaign.player_1_route,
-                Player::Player_2 => &mut campaign.player_2_route,
+                Player::Player1 => &mut campaign.player_1_route,
+                Player::Player2 => &mut campaign.player_2_route,
             };
 
             if let Some(last_card) = route.last() {
@@ -140,7 +147,7 @@ impl Game {
             TakeCardFrom::FreeCards(campaign_type) => {
                 let campaign =
                     Self::get_campaign_by_type(&mut self.playground.campaigns, &campaign_type)
-                        .unwrap(); // we already validating it
+                        .unwrap(); // we already validated it
                 campaign.free_cards.pop().unwrap() // and this too
             }
         };
@@ -163,7 +170,7 @@ impl Game {
 
     #[inline]
     fn get_campaign_by_type<'a>(
-        campaigns: &'a mut Vec<Campaign>,
+        campaigns: &'a mut [Campaign],
         campaign_type: &CampaignType,
     ) -> GameResult<&'a mut Campaign> {
         campaigns
@@ -173,15 +180,66 @@ impl Game {
     }
 
     #[inline]
-    pub fn players_hand(&self, player: &Player) -> &Vec<Card> {
-        match player {
-            Player::Player_1 => &self.player_1_hand,
-            Player::Player_2 => &self.player_2_hand,
+    fn is_game_ended(&self) -> bool {
+        self.playground.main_deck.is_empty()
+    }
+
+    pub fn game_info(&self, player: &Player) -> GameInfo {
+        let players_hand = match player {
+            Player::Player1 => &self.player_1_hand,
+            Player::Player2 => &self.player_2_hand,
+        };
+
+        let main_deck_len = self.playground.main_deck.len();
+        let is_game_ended = self.is_game_ended();
+
+        let campaigns = self
+            .playground
+            .campaigns
+            .iter()
+            .map(|campaign| {
+                let (players_route, foes_route) = match player {
+                    Player::Player1 => (&campaign.player_1_route, &campaign.player_2_route),
+                    Player::Player2 => (&campaign.player_2_route, &campaign.player_1_route),
+                };
+
+                let last_free_card = campaign.free_cards.last();
+                GameInfoCampaign::new(players_route, foes_route, last_free_card)
+            })
+            .collect();
+
+        GameInfo {
+            campaigns,
+            main_deck_len,
+            players_hand,
+            is_game_ended,
         }
     }
 
-    #[inline]
-    pub fn is_game_ended(&self) -> bool {
-        self.playground.main_deck.is_empty()
+    pub fn game_results(&self) -> GameInfoResults {
+        let (mut player_1_points, mut player_2_points) = (0, 0);
+
+        for campaign in self.playground.campaigns.iter() {
+            for (route, players_points) in [
+                (&campaign.player_1_route, &mut player_1_points),
+                (&campaign.player_2_route, &mut player_2_points),
+            ] {
+                let (points, multiplier) =
+                    route.iter().fold((0, 1), |(points, multiplier), card| {
+                        match card.card_type() {
+                            CardType::HandShake => (points, multiplier + 1),
+                            CardType::Rank(rank) => (points + *rank as usize, multiplier),
+                        }
+                    });
+
+                // calculating route income
+                *players_points += points * multiplier - self.campaign_outcome;
+            }
+        }
+
+        GameInfoResults {
+            player_1_points,
+            player_2_points,
+        }
     }
 }

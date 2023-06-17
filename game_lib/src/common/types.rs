@@ -9,8 +9,8 @@ pub enum CardType {
 
 #[derive(Debug, PartialEq, Eq, Clone)]
 pub enum Player {
-    Player_1,
-    Player_2,
+    Player1,
+    Player2,
 }
 
 pub enum MoveType {
