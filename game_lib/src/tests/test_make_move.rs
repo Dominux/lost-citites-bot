@@ -18,3 +18,17 @@ fn test_make_move_after_game_over() {
     let move_result = game.make_move(&player, 0, MoveType::MakeCardFree, TakeCardFrom::MainDeck);
     assert!(matches!(move_result, GameResult::Err(err) if matches!(err, GameError::GameIsOver)))
 }
+
+#[test]
+fn test_make_move_by_wrong_player() {
+    let mut game = create_game();
+
+    let player = Player::Player2;
+    let info = game.game_info(&player);
+    assert!(!info.is_players_turn);
+
+    let move_result = game.make_move(&player, 0, MoveType::MakeCardFree, TakeCardFrom::MainDeck);
+    assert!(
+        matches!(&move_result, GameResult::Err(err) if matches!(&err, GameError::NotPlayersTurn(turn) if Player::Player1 == *turn))
+    )
+}

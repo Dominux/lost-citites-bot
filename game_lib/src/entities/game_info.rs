@@ -3,6 +3,7 @@ use super::card::Card;
 /// Available game info for player
 pub struct GameInfo<'a> {
     pub campaigns: Vec<GameInfoCampaign<'a>>,
+    pub is_players_turn: bool,
     pub main_deck_len: usize,
     pub players_hand: &'a Vec<Card>,
     pub is_game_ended: bool,
@@ -11,12 +12,14 @@ pub struct GameInfo<'a> {
 impl<'a> GameInfo<'a> {
     pub(crate) fn new(
         campaigns: Vec<GameInfoCampaign<'a>>,
+        is_players_turn: bool,
         main_deck_len: usize,
         players_hand: &'a Vec<Card>,
         is_game_ended: bool,
     ) -> Self {
         Self {
             campaigns,
+            is_players_turn,
             main_deck_len,
             players_hand,
             is_game_ended,

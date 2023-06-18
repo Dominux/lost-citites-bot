@@ -82,8 +82,8 @@ impl Game {
         }
 
         // turn validation
-        if *player == self.turn {
-            return Err(GameError::NotPlayersPlayer(self.turn.clone()));
+        if *player != self.turn {
+            return Err(GameError::NotPlayersTurn(self.turn.clone()));
         }
 
         // some validation
@@ -161,6 +161,12 @@ impl Game {
 
         players_hand.push(new_card);
 
+        // changing turn
+        self.turn = match self.turn {
+            Player::Player1 => Player::Player2,
+            Player::Player2 => Player::Player1,
+        };
+
         Ok(())
     }
 
@@ -204,8 +210,11 @@ impl Game {
             })
             .collect();
 
+        let is_players_turn = self.turn == *player;
+
         GameInfo {
             campaigns,
+            is_players_turn,
             main_deck_len,
             players_hand,
             is_game_ended,

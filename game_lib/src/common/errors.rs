@@ -3,7 +3,7 @@ use super::types::{CampaignType, Player};
 #[derive(thiserror::Error, Debug)]
 pub enum GameError {
     #[error("Now it is a [0] turn")]
-    NotPlayersPlayer(Player),
+    NotPlayersTurn(Player),
     #[error("Player does not have such a card")]
     PlayerDoesNotHaveSuchCard,
     #[error("Last card in the route has greater rank")]
