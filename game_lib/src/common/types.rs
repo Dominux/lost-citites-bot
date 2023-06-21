@@ -1,7 +1,11 @@
+#[cfg(feature = "wasm")]
+use serde::Serialize;
+
 pub type CampaignType = u8;
 pub type CardRank = u8;
 
 #[derive(Debug, PartialEq, Eq)]
+#[cfg_attr(feature = "wasm", derive(Clone, Copy, Serialize))]
 pub enum CardType {
     Rank(CardRank),
     HandShake,

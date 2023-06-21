@@ -22,7 +22,7 @@ pub struct Game {
 }
 
 impl Game {
-    pub fn new<T: Shuffler>(config: &Config, shuffler: T) -> Self {
+    pub(crate) fn new<T: Shuffler>(config: &Config, shuffler: T) -> Self {
         // generating cards
         let mut cards: Vec<_> = (0..config.campaigns_amount)
             .flat_map(|campaign_type| {

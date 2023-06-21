@@ -1,7 +1,23 @@
+#[cfg(feature = "wasm")]
+use wasm_bindgen::prelude::*;
+
 pub mod common;
-pub mod config;
+mod config;
 pub mod entities;
+
+pub use config::Config;
+
+#[cfg(not(feature = "wasm"))]
 pub mod game;
+#[cfg(not(feature = "wasm"))]
+pub use game::Game;
+
+#[cfg(feature = "wasm")]
+pub(crate) mod game;
+#[cfg(feature = "wasm")]
+pub mod wasm;
+#[cfg(feature = "wasm")]
+pub use wasm::game::Game;
 
 #[cfg(test)]
 mod tests;
@@ -9,7 +25,7 @@ mod tests;
 /// Usage
 ///
 /// ```
-/// use game_lib::config::Config;
+/// use game_lib::Config;
 /// use game_lib::GameBuilder;
 ///
 /// ...
@@ -17,11 +33,14 @@ mod tests;
 /// let config = Config::new(...);
 /// let game = GameBuilder::build(config);
 /// ```
+#[cfg_attr(feature = "wasm", wasm_bindgen)]
 pub struct GameBuilder;
 
+#[cfg_attr(feature = "wasm", wasm_bindgen)]
 impl GameBuilder {
-    pub fn build(config: &config::Config) -> game::Game {
+    #[cfg_attr(feature = "wasm", wasm_bindgen)]
+    pub fn build(config: &config::Config) -> Game {
         let shuffler = common::shuffler::RandomShuffler;
-        game::Game::new(config, shuffler)
+        Game::new(config, shuffler)
     }
 }

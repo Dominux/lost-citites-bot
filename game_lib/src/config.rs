@@ -1,3 +1,7 @@
+#[cfg(feature = "wasm")]
+use wasm_bindgen::prelude::*;
+
+#[cfg_attr(feature = "wasm", wasm_bindgen, derive(Debug, Clone, Copy))]
 pub struct Config {
     pub campaigns_amount: u8,
     pub card_ranks_amount: u8,
