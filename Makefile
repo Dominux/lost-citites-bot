@@ -4,5 +4,8 @@ test_lib:
 clippy_lib:
 	cd game_lib && cargo clippy && cd -
 
+build_lib:
+	cd game_lib && cargo build
+
 build_lib_for_wasm:
 	cd game_lib && wasm-pack build --target web -- --features wasm
