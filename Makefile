@@ -9,3 +9,7 @@ build_lib:
 
 build_lib_for_wasm:
 	cd game_lib && wasm-pack build --target web -- --features wasm
+
+
+run_dev:
+	cd webapp && pnpm run dev || true && cd -
