@@ -50,7 +50,7 @@ impl Game {
     }
 
     pub fn game_info(&self, player: Player) -> GameInfo {
-        todo!()
+        self.inner.game_info(&player.into()).into()
     }
 
     #[wasm_bindgen(getter)]

@@ -3,7 +3,10 @@ use wasm_bindgen::prelude::*;
 
 use crate::{
     common::types::{CampaignType, CardType, Player as InnerPlayer},
-    entities::card::Card as InnerCard,
+    entities::{
+        card::Card as InnerCard,
+        game_info::{GameInfo as InnerGameInfo, GameInfoCampaign as InnerGameInfoCampaign},
+    },
 };
 
 #[wasm_bindgen]
@@ -37,22 +40,6 @@ pub struct GameInfo {
 
 #[wasm_bindgen]
 impl GameInfo {
-    pub(crate) fn new(
-        campaigns: Vec<GameInfoCampaign>,
-        is_players_turn: bool,
-        main_deck_len: usize,
-        players_hand: Vec<Card>,
-        is_game_ended: bool,
-    ) -> Self {
-        Self {
-            campaigns,
-            is_players_turn,
-            main_deck_len,
-            players_hand,
-            is_game_ended,
-        }
-    }
-
     #[wasm_bindgen(getter)]
     pub fn campaigns(&self) -> JsValue {
         serde_wasm_bindgen::to_value(&self.campaigns).unwrap()
@@ -61,6 +48,26 @@ impl GameInfo {
     #[wasm_bindgen(getter)]
     pub fn players_hand(&self) -> JsValue {
         serde_wasm_bindgen::to_value(&self.players_hand).unwrap()
+    }
+}
+
+impl<'a> From<InnerGameInfo<'a>> for GameInfo {
+    fn from(inner: InnerGameInfo) -> Self {
+        Self {
+            campaigns: inner
+                .campaigns
+                .into_iter()
+                .map(|campaign| campaign.into())
+                .collect(),
+            is_players_turn: inner.is_players_turn,
+            main_deck_len: inner.main_deck_len,
+            players_hand: inner
+                .players_hand
+                .into_iter()
+                .map(|card| card.clone().into())
+                .collect(),
+            is_game_ended: inner.is_game_ended,
+        }
     }
 }
 
@@ -73,16 +80,20 @@ pub struct GameInfoCampaign {
     pub last_free_card: Option<Card>,
 }
 
-impl GameInfoCampaign {
-    pub(crate) fn new(
-        players_route: Vec<Card>,
-        foes_route: Vec<Card>,
-        last_free_card: Option<Card>,
-    ) -> Self {
+impl<'a> From<InnerGameInfoCampaign<'a>> for GameInfoCampaign {
+    fn from(inner: InnerGameInfoCampaign) -> Self {
         Self {
-            players_route,
-            foes_route,
-            last_free_card,
+            players_route: inner
+                .players_route
+                .into_iter()
+                .map(|card| card.clone().into())
+                .collect(),
+            foes_route: inner
+                .foes_route
+                .into_iter()
+                .map(|card| card.clone().into())
+                .collect(),
+            last_free_card: inner.last_free_card.map(|card| card.clone().into()),
         }
     }
 }
