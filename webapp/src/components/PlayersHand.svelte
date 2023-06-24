@@ -5,7 +5,7 @@
 </script>
 
 <div class="players-hand">
-	{#each playersHand as card}
+	{#each playersHand as _card}
 		<Card />
 	{/each}
 </div>

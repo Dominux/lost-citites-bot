@@ -7,8 +7,8 @@
 
 <div class="playground">
 	<div class="campaigns">
-		{#each campaigns as campaign}
-			<Campaign />
+		{#each campaigns as campaign_type}
+			<Campaign {campaign_type} />
 		{/each}
 	</div>
 	<PlayersHand />

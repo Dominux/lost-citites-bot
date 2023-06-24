@@ -12,7 +12,9 @@ pub struct Config {
     pub bonus: u8,
 }
 
+#[cfg_attr(feature = "wasm", wasm_bindgen)]
 impl Config {
+    #[cfg_attr(feature = "wasm", wasm_bindgen(constructor))]
     pub fn new(
         campaigns_amount: u8,
         card_ranks_amount: u8,
