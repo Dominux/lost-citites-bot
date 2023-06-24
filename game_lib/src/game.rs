@@ -18,11 +18,11 @@ pub struct Game {
     turn: Player,
     player_1_hand: Vec<Card>,
     player_2_hand: Vec<Card>,
-    campaign_outcome: usize,
+    config: Config,
 }
 
 impl Game {
-    pub(crate) fn new<T: Shuffler>(config: &Config, shuffler: T) -> Self {
+    pub(crate) fn new<T: Shuffler>(config: Config, shuffler: T) -> Self {
         // generating cards
         let mut cards: Vec<_> = (0..config.campaigns_amount)
             .flat_map(|campaign_type| {
@@ -65,7 +65,7 @@ impl Game {
             turn: Player::Player1,
             player_1_hand,
             player_2_hand,
-            campaign_outcome: config.campaign_outcome,
+            config,
         }
     }
 
@@ -238,7 +238,11 @@ impl Game {
                         });
 
                 // calculating route income
-                *players_score += score * multiplier - self.campaign_outcome as isize;
+                let mut route_income = (score - self.config.campaign_outcome as isize) * multiplier;
+                if route.len() >= self.config.min_cards_for_bonus as usize {
+                    route_income += self.config.bonus as isize
+                }
+                *players_score += route_income;
             }
         }
 

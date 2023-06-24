@@ -8,6 +8,8 @@ pub struct Config {
     pub handshakes_amount: u8,
     pub cards_on_hand_amount: u8,
     pub campaign_outcome: usize,
+    pub min_cards_for_bonus: u8,
+    pub bonus: u8,
 }
 
 impl Config {
@@ -17,6 +19,8 @@ impl Config {
         handshakes_amount: u8,
         cards_on_hand_amount: u8,
         campaign_outcome: usize,
+        min_cards_for_bonus: u8,
+        bonus: u8,
     ) -> Self {
         Self {
             campaigns_amount,
@@ -24,6 +28,8 @@ impl Config {
             handshakes_amount,
             cards_on_hand_amount,
             campaign_outcome,
+            min_cards_for_bonus,
+            bonus,
         }
     }
 }

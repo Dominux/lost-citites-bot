@@ -39,7 +39,7 @@ pub struct GameBuilder;
 #[cfg_attr(feature = "wasm", wasm_bindgen)]
 impl GameBuilder {
     #[cfg_attr(feature = "wasm", wasm_bindgen)]
-    pub fn build(config: &config::Config) -> Game {
+    pub fn build(config: config::Config) -> Game {
         let shuffler = common::shuffler::RandomShuffler;
         Game::new(config, shuffler)
     }

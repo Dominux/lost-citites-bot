@@ -19,7 +19,7 @@ pub struct Game {
 
 #[wasm_bindgen]
 impl Game {
-    pub(crate) fn new(config: &Config, shuffler: RandomShuffler) -> Self {
+    pub(crate) fn new(config: Config, shuffler: RandomShuffler) -> Self {
         let inner = InnerGame::new(config, shuffler);
         Self { inner }
     }
