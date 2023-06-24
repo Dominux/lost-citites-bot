@@ -33,9 +33,9 @@ impl Game {
         free_cards_campaign: Option<u8>,
     ) -> GameResult<()> {
         let move_type = if is_continue_route {
-            MoveType::ContinueRoute
+            MoveType::ContinueCampaignRoute
         } else {
-            MoveType::ContinueRoute
+            MoveType::ContinueCampaignRoute
         };
 
         let take_card_from = if is_take_from_main_deck {

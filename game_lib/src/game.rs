@@ -114,7 +114,7 @@ impl Game {
         let campaign =
             Self::get_campaign_by_type(&mut self.playground.campaigns, campaign_type).unwrap(); // exactly we created campaign types inside cards
 
-        if matches!(move_type, MoveType::ContinueRoute) {
+        if matches!(move_type, MoveType::ContinueCampaignRoute) {
             // continuing route
             let route = match player {
                 Player::Player1 => &mut campaign.player_1_route,

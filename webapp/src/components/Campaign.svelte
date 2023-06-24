@@ -1,5 +1,10 @@
 <script>
 	import FreeCardsDeck from './FreeCardsDeck.svelte'
+	import CampaignRoute from './CampaignRoute.svelte'
 </script>
 
-<div><FreeCardsDeck /></div>
+<div>
+	<CampaignRoute />
+	<FreeCardsDeck />
+	<CampaignRoute />
+</div>

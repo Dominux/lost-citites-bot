@@ -18,7 +18,7 @@ pub enum Player {
 }
 
 pub enum MoveType {
-    ContinueRoute,
+    ContinueCampaignRoute,
     MakeCardFree,
 }
 
