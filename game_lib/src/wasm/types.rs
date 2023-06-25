@@ -116,6 +116,7 @@ impl<'a> From<InnerGameInfoCampaign<'a>> for GameInfoCampaign {
 pub struct Card {
     campaign: CampaignType,
     card_type: CardType,
+    id: usize,
 }
 
 #[wasm_bindgen]
@@ -129,6 +130,11 @@ impl Card {
     pub fn card_type(&self) -> JsValue {
         serde_wasm_bindgen::to_value(&self.card_type).unwrap()
     }
+
+    #[wasm_bindgen(getter)]
+    pub fn id(&self) -> usize {
+        self.id
+    }
 }
 
 impl From<InnerCard> for Card {
@@ -136,6 +142,7 @@ impl From<InnerCard> for Card {
         Self {
             campaign: *value.campaign(),
             card_type: *value.card_type(),
+            id: value.id(),
         }
     }
 }

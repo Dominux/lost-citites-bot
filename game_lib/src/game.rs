@@ -24,12 +24,19 @@ pub struct Game {
 impl Game {
     pub(crate) fn new<T: Shuffler>(config: Config, shuffler: T) -> Self {
         // generating cards
+        let mut next_id = 0;
         let mut cards: Vec<_> = (0..config.campaigns_amount)
             .flat_map(|campaign_type| {
-                let rank_cards = (1..=config.card_ranks_amount)
-                    .map(move |rank| Card::new(campaign_type, CardType::Rank(rank)));
-                let handshake_cards = (1..=config.handshakes_amount)
-                    .map(move |_| Card::new(campaign_type, CardType::HandShake));
+                let rank_cards = (1..=config.card_ranks_amount).map(move |rank| {
+                    let card = Card::new(next_id, campaign_type, CardType::Rank(rank));
+                    next_id += 1;
+                    card
+                });
+                let handshake_cards = (1..=config.handshakes_amount).map(move |_| {
+                    let card = Card::new(next_id, campaign_type, CardType::HandShake);
+                    next_id += 1;
+                    card
+                });
                 rank_cards.chain(handshake_cards)
             })
             .collect();
