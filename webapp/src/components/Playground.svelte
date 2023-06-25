@@ -1,14 +1,15 @@
 <script>
+	import { gameStore } from '../stores/game'
 	import Campaign from './Campaign.svelte'
 	import PlayersHand from './PlayersHand.svelte'
-
-	const campaigns = [1, 2, 3, 4, 5]
 </script>
 
 <div class="playground">
 	<div class="campaigns">
-		{#each campaigns as campaign_type}
-			<Campaign {campaign_type} />
+		{#each [...$gameStore
+				.get_info('Player1')
+				.campaigns.entries()] as [campaign_type, campaign]}
+			<Campaign {campaign} {campaign_type} />
 		{/each}
 	</div>
 	<PlayersHand />

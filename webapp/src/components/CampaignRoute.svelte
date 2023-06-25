@@ -1,4 +1,7 @@
 <script lang="ts">
+	import { Card as CardModel } from '../../pkg'
+
+	export let route: Array<CardModel>
 	export let campaign_type: number
 </script>
 
@@ -8,6 +11,7 @@
 	.route {
 		margin: 2vw;
 		text-align: center;
+		padding-top: 2rem;
 		box-shadow: 0 0 0 2px blue;
 	}
 </style>

@@ -80,6 +80,19 @@ pub struct GameInfoCampaign {
     pub last_free_card: Option<Card>,
 }
 
+#[wasm_bindgen]
+impl GameInfoCampaign {
+    #[wasm_bindgen(getter)]
+    pub fn players_route(&self) -> JsValue {
+        serde_wasm_bindgen::to_value(&self.players_route).unwrap()
+    }
+
+    #[wasm_bindgen(getter)]
+    pub fn foes_route(&self) -> JsValue {
+        serde_wasm_bindgen::to_value(&self.foes_route).unwrap()
+    }
+}
+
 impl<'a> From<InnerGameInfoCampaign<'a>> for GameInfoCampaign {
     fn from(inner: InnerGameInfoCampaign) -> Self {
         Self {

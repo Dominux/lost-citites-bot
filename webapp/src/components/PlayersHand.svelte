@@ -1,12 +1,11 @@
 <script lang="ts">
+	import { gameStore } from '../stores/game'
 	import Card from './Card.svelte'
-
-	const playersHand = [0, 1, 2, 3, 4, 5, 6, 7]
 </script>
 
 <div class="players-hand">
-	{#each playersHand as _card}
-		<Card />
+	{#each $gameStore.get_info('Player1').players_hand as card}
+		<Card {card} />
 	{/each}
 </div>
 
