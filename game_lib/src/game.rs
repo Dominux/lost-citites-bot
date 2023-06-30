@@ -27,17 +27,21 @@ impl Game {
         let mut next_id = 0;
         let mut cards: Vec<_> = (0..config.campaigns_amount)
             .flat_map(|campaign_type| {
-                let rank_cards = (1..=config.card_ranks_amount).map(move |rank| {
+                let mut cards = Vec::with_capacity(
+                    (config.card_ranks_amount + config.handshakes_amount) as usize,
+                );
+
+                for rank in 1..=config.card_ranks_amount {
                     let card = Card::new(next_id, campaign_type, CardType::Rank(rank));
+                    cards.push(card);
                     next_id += 1;
-                    card
-                });
-                let handshake_cards = (1..=config.handshakes_amount).map(move |_| {
+                }
+                for _ in 0..config.handshakes_amount {
                     let card = Card::new(next_id, campaign_type, CardType::HandShake);
+                    cards.push(card);
                     next_id += 1;
-                    card
-                });
-                rank_cards.chain(handshake_cards)
+                }
+                cards
             })
             .collect();
 
