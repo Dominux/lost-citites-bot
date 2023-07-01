@@ -1,27 +1,47 @@
 <script lang="ts">
 	import { gameStore } from '../stores/game'
+	import { moveProcessStore } from '../stores/move_process'
 	import Card from './Card.svelte'
+	import type { Card as CardModel } from '../../pkg'
+	import { MoveStage } from '../entities/move_process'
 
 	let cards = $gameStore.get_info('Player1').players_hand
 
-	let selectedCardId: number | null = null
+	const onSelect = (card: CardModel) => {
+		if (
+			![MoveStage.SelectingCard, MoveStage.PutingCard].includes(
+				$moveProcessStore.stage
+			)
+		)
+			return
 
-	const onDiselect = (cardId: number) => {
-		if (selectedCardId == cardId) {
-			selectedCardId = null
-		}
+		moveProcessStore.update((mp) => {
+			mp.selectCard(card)
+			return mp
+		})
+	}
+
+	const onDiselect = () => {
+		if ($moveProcessStore.stage != MoveStage.PutingCard) return
+
+		moveProcessStore.update((mp) => {
+			mp.diselectCard()
+			return mp
+		})
 	}
 </script>
 
 <div class="players-hand">
 	{#each cards as card (card.id)}
-		<Card
-			{card}
-			on:select={() => {
-				selectedCardId = card.id
-			}}
-			on:diselect={() => onDiselect(card.id)}
-		/>
+		<!-- svelte-ignore a11y-click-events-have-key-events -->
+		<span
+			class="card-border-radius"
+			class:selected_card={card.id == $moveProcessStore.card?.id}
+			on:click={(_) => onSelect(card)}
+			on:blur={(_) => onDiselect()}
+		>
+			<Card {card} />
+		</span>
 	{/each}
 </div>
 
@@ -29,5 +49,9 @@
 	.players-hand {
 		display: inline-flex;
 		justify-content: space-around;
+	}
+
+	.selected_card {
+		outline: 4px solid orange;
 	}
 </style>
