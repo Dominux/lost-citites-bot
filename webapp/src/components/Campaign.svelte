@@ -17,6 +17,7 @@
 
 	$: isAvailableToTakeCard =
 		$moveProcessStore.stage == MoveStage.TakingNewCard &&
+		campaign.last_free_card &&
 		!(
 			campaign_type == $moveProcessStore.card.campaign &&
 			$moveProcessStore.putTo == PutTo.FreeCards
@@ -42,6 +43,7 @@
 	/>
 	<FreeCardsDeck
 		{campaign_type}
+		lastCard={campaign.last_free_card}
 		{isAvailableToPutCard}
 		{isAvailableToTakeCard}
 	/>

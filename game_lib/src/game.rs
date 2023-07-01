@@ -83,7 +83,7 @@ impl Game {
     pub fn make_move(
         &mut self,
         player: &Player,
-        card_index: usize,
+        card_id: usize,
         move_type: MoveType,
         take_card_from: TakeCardFrom,
     ) -> GameResult<()> {
@@ -116,7 +116,8 @@ impl Game {
 
         let (card_type, campaign_type) = {
             let card = players_hand
-                .get(card_index)
+                .iter()
+                .find(|card| card.id() == card_id)
                 .ok_or(GameError::PlayerDoesNotHaveSuchCard)?;
             (card.card_type(), card.campaign())
         };
@@ -142,7 +143,7 @@ impl Game {
             }
 
             // appending the card to the route
-            route.push(players_hand.swap_remove(card_index))
+            Self::move_card_from_hands_to_vec(card_id, players_hand, route)
         } else {
             // making card free
 
@@ -153,9 +154,7 @@ impl Game {
             }
 
             // appending the card to the free cards
-            campaign
-                .free_cards
-                .push(players_hand.swap_remove(card_index))
+            Self::move_card_from_hands_to_vec(card_id, players_hand, &mut campaign.free_cards)
         }
 
         let new_card = match take_card_from {
@@ -190,6 +189,20 @@ impl Game {
             .iter_mut()
             .find(|campaign| *campaign_type == campaign.campaign_type)
             .ok_or(GameError::CampaignDoesNotExist(*campaign_type))
+    }
+
+    #[inline]
+    fn move_card_from_hands_to_vec(
+        card_id: usize,
+        hand: &mut Vec<Card>,
+        target_vec: &mut Vec<Card>,
+    ) {
+        let index = hand
+            .iter_mut()
+            .position(|card| card.id() == card_id)
+            .unwrap();
+        let card = hand.swap_remove(index);
+        target_vec.push(card)
     }
 
     #[inline]

@@ -1,9 +1,11 @@
 import type { Card } from '../../pkg/lost_cities_game_lib'
+import type { Player } from './game'
 
 export enum MoveStage {
 	SelectingCard,
 	PutingCard,
 	TakingNewCard,
+	SubmitingMove,
 }
 
 export enum PutTo {
@@ -17,10 +19,11 @@ export enum TakeFrom {
 }
 
 export class MoveProcess {
-	protected _player: 'Player1' | 'Player2'
 	protected _stage: MoveStage
 	protected _selectedCard: Card
 	protected _putTo: PutTo
+	protected _takeFrom: TakeFrom
+	protected _freeCardsCampaign?: number
 
 	get stage(): MoveStage {
 		return this._stage
@@ -34,7 +37,15 @@ export class MoveProcess {
 		return this._putTo
 	}
 
-	constructor() {
+	get takeFrom(): TakeFrom {
+		return this._takeFrom
+	}
+
+	get freeCardsCampaign(): number | void {
+		return this._freeCardsCampaign
+	}
+
+	constructor(readonly player: Player) {
 		this._stage = MoveStage.SelectingCard
 	}
 
@@ -53,5 +64,9 @@ export class MoveProcess {
 		this._stage = MoveStage.TakingNewCard
 	}
 
-	takeNewCard(takeFrom: TakeFrom, freeCardsCampaign: number | null) {}
+	takeNewCard(takeFrom: TakeFrom, freeCardsCampaign?: number) {
+		this._takeFrom = takeFrom
+		this._freeCardsCampaign = freeCardsCampaign
+		this._stage = MoveStage.SubmitingMove
+	}
 }

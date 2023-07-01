@@ -1,8 +1,11 @@
 <script lang="ts">
 	import { moveProcessStore } from '../stores/move_process'
-	import { PutTo } from '../entities/move_process'
+	import { PutTo, TakeFrom } from '../entities/move_process'
+	import type { Card as CardModel } from '../../pkg'
+	import Card from './Card.svelte'
 
 	export let campaign_type: number
+	export let lastCard: CardModel
 	export let isAvailableToPutCard = false
 	export let isAvailableToTakeCard = false
 
@@ -13,6 +16,10 @@
 				return mp
 			})
 		} else if (isAvailableToTakeCard) {
+			moveProcessStore.update((mp) => {
+				mp.takeNewCard(TakeFrom.FreeCards, campaign_type)
+				return mp
+			})
 		}
 	}
 </script>
@@ -26,7 +33,11 @@
 	class:available-to-take-card={isAvailableToTakeCard}
 	on:click={(_) => onSelect()}
 >
-	{campaign_type}
+	{#if lastCard}
+		<Card card={lastCard} />
+	{:else}
+		{campaign_type}
+	{/if}
 </div>
 
 <style scoped>

@@ -27,7 +27,7 @@ impl Game {
     pub fn make_move(
         &mut self,
         player: Player,
-        card_index: usize,
+        card_id: usize,
         is_continue_route: bool,
         is_take_from_main_deck: bool,
         free_cards_campaign: Option<u8>,
@@ -45,7 +45,7 @@ impl Game {
         };
 
         self.inner
-            .make_move(&player.into(), card_index, move_type, take_card_from)?;
+            .make_move(&player.into(), card_id, move_type, take_card_from)?;
         Ok(())
     }
 

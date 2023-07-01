@@ -7,7 +7,7 @@
 	import Card from './Card.svelte'
 	import { MoveStage } from '../entities/move_process'
 
-	let cards = $gameStore.get_info('Player1').players_hand
+	$: cards = $gameStore.get_info($moveProcessStore.player).players_hand
 
 	const onSelect = (card: CardModel) => {
 		if (

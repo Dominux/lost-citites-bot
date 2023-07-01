@@ -1,19 +1,20 @@
 <script lang="ts">
+	import { moveProcessStore } from '../stores/move_process'
 	import { Card as CardModel } from '../../pkg'
 	import { PutTo } from '../entities/move_process'
-	import { moveProcessStore } from '../stores/move_process'
+	import Card from './Card.svelte'
 
 	export let isAvailableToPutCard: boolean | null
 	export let route: Array<CardModel>
 	export let campaign_type: number
 
 	const onSelect = () => {
-		if (isAvailableToPutCard) {
-			moveProcessStore.update((mp) => {
-				mp.putCard(PutTo.Route)
-				return mp
-			})
-		}
+		if (!isAvailableToPutCard) return
+
+		moveProcessStore.update((mp) => {
+			mp.putCard(PutTo.Route)
+			return mp
+		})
 	}
 </script>
 
@@ -26,7 +27,11 @@
 		campaign_type == $moveProcessStore.card.campaign}
 	on:click={(_) => onSelect()}
 >
-	{campaign_type}
+	{#each route as card (card.id)}
+		<Card {card} />
+	{:else}
+		{campaign_type}
+	{/each}
 </div>
 
 <style scoped>
