@@ -3,6 +3,10 @@
 	--card-height: calc(var(--card-width) * 1.618);
 }
 
+* {
+	user-select: none;
+}
+
 .card-sizes {
 	height: var(--card-height);
 	width: var(--card-width);
