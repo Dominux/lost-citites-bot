@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { PutTo } from '../entities/move_process'
 	import { moveProcessStore } from '../stores/move_process'
+	import { PutTo } from '../entities/move_process'
 
 	export let campaign_type: number
 	export let isAvailableToPutCard = false
@@ -19,7 +19,7 @@
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <div
-	class="card-sizes card-border-radius free-card-skeleton"
+	class="card-sizes card-border-radius free-card-skeleton animated"
 	class:available-free-cards={isAvailableToPutCard}
 	class:put-card={$moveProcessStore.putTo == PutTo.FreeCards &&
 		campaign_type == $moveProcessStore.card.campaign}

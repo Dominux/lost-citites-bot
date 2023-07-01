@@ -19,7 +19,7 @@
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <div
-	class="card-sizes card-border-radius route"
+	class="card-sizes card-border-radius route animated"
 	class:available-route={isAvailableToPutCard}
 	class:put-card={isAvailableToPutCard !== null &&
 		$moveProcessStore.putTo == PutTo.Route &&

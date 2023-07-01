@@ -1,8 +1,10 @@
 <script lang="ts">
 	import { gameStore } from '../stores/game'
 	import { moveProcessStore } from '../stores/move_process'
-	import Card from './Card.svelte'
+
 	import type { Card as CardModel } from '../../pkg'
+
+	import Card from './Card.svelte'
 	import { MoveStage } from '../entities/move_process'
 
 	let cards = $gameStore.get_info('Player1').players_hand
@@ -35,7 +37,7 @@
 	{#each cards as card (card.id)}
 		<!-- svelte-ignore a11y-click-events-have-key-events -->
 		<span
-			class="card-border-radius"
+			class="card-border-radius animated"
 			class:selected_card={card.id == $moveProcessStore.card?.id}
 			on:click={(_) => onSelect(card)}
 			on:blur={(_) => onDiselect()}
@@ -52,6 +54,6 @@
 	}
 
 	.selected_card {
-		outline: 4px solid orange;
+		transform: translateY(calc(var(--card-width) * -0.2));
 	}
 </style>

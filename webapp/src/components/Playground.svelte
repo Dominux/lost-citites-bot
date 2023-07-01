@@ -8,7 +8,7 @@
 	<div class="campaigns">
 		{#each [...$gameStore
 				.get_info('Player1')
-				.campaigns.entries()] as [campaign_type, campaign]}
+				.campaigns.entries()] as [campaign_type, campaign] (campaign_type)}
 			<Campaign {campaign} {campaign_type} />
 		{/each}
 	</div>

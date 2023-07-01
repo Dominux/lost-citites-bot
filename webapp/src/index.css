@@ -15,3 +15,7 @@
 .card-border-radius {
 	border-radius: 10%;
 }
+
+.animated {
+	transition: all 0.3s;
+}
