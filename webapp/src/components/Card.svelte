@@ -2,14 +2,23 @@
 	import type { Card as CardModel } from '../../pkg'
 
 	export let card: CardModel
+
+	const getCardSrc = (card: CardModel) => {
+		const cardPrefix = card.campaign + 1
+		const cardPostfix = card.card_type.Rank
+			? card.card_type.Rank
+			: 'handshake'
+		return `./assets/card_images/${cardPrefix}_${cardPostfix}.webp`
+	}
 </script>
 
 <div class="card card-sizes card-border-radius">
-	Campaign: {card.campaign}
+	<img class="img card-border-radius" src={getCardSrc(card)} alt="Card" />
+	<!-- Campaign: {card.campaign}
 	<br />
 	Rank: {typeof card.card_type == 'string'
 		? card.card_type
-		: card.card_type.Rank}
+		: card.card_type.Rank} -->
 </div>
 
 <style scoped>
@@ -17,5 +26,10 @@
 		text-align: center;
 		padding-top: 2rem;
 		box-shadow: 0 0 0 2px red;
+	}
+
+	.img {
+		max-width: 100%;
+		max-height: 100%;
 	}
 </style>

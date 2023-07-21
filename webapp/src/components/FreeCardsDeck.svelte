@@ -9,6 +9,8 @@
 	export let isAvailableToPutCard = false
 	export let isAvailableToTakeCard = false
 
+	const campaignTypesColors = ['yellow', 'blue', 'white', 'green', 'red']
+
 	const onSelect = () => {
 		if (isAvailableToPutCard) {
 			moveProcessStore.update((mp) => {
@@ -36,7 +38,10 @@
 	{#if lastCard}
 		<Card card={lastCard} />
 	{:else}
-		{campaign_type}
+		<div
+			class="free-cards-cover card-border-radius"
+			style={`background-color: ${campaignTypesColors[campaign_type]}`}
+		/>
 	{/if}
 </div>
 
@@ -62,5 +67,10 @@
 	.available-to-take-card {
 		box-shadow: 0 0 0 3px lightgreen, 0 0 0 8px rgba(0, 0, 0, 0.9),
 			0 0 0 10px lightgreen;
+	}
+
+	.free-cards-cover {
+		min-width: 100%;
+		min-height: 100%;
 	}
 </style>
