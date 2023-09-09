@@ -4,6 +4,7 @@
 	import { PutTo } from '../entities/move_process'
 	import Card from './Card.svelte'
 
+	export let isPlayer: boolean
 	export let isAvailableToPutCard: boolean | null
 	export let route: Array<CardModel>
 	export let campaign_type: number
@@ -25,21 +26,24 @@
 	class:put-card={isAvailableToPutCard !== null &&
 		$moveProcessStore.putTo == PutTo.Route &&
 		campaign_type == $moveProcessStore.card.campaign}
+	class:foe-cards={!isPlayer}
+	style="min-height: {7 + route.length * 4}vw;"
 	on:click={(_) => onSelect()}
 >
-	{#each route as card (card.id)}
-		<Card {card} />
-	{:else}
-		{campaign_type}
+	{#each route as card, i (card.id)}
+		<div class={i === 0 ? 'first-card' : 'next-card'}>
+			<Card {card} />
+		</div>
 	{/each}
 </div>
 
 <style scoped>
 	.route {
 		margin: 2vw;
-		text-align: center;
-		padding-top: 2rem;
+		padding-top: 2vw;
 		box-shadow: 0 0 0 2px blue;
+		/* min-height: fit-content; */
+		/* min-height: 42vw; */
 	}
 
 	.available-route {
@@ -48,5 +52,17 @@
 
 	.put-card {
 		box-shadow: 0 0 0 4px orange;
+	}
+
+	.foe-cards {
+		transform: rotate(180deg);
+	}
+
+	.first-card {
+		margin-top: -2vw;
+	}
+	.next-card {
+		margin-top: -14vw;
+		position: relative;
 	}
 </style>

@@ -24,8 +24,9 @@
 <style scoped>
 	.card {
 		text-align: center;
-		padding-top: 2rem;
-		box-shadow: 0 0 0 2px red;
+		padding-top: 2vw;
+		box-shadow: 0 0 0 2px blanchedalmond;
+		background-color: black;
 	}
 
 	.img {

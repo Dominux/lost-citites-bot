@@ -37,6 +37,7 @@
 
 <div>
 	<CampaignRoute
+		isPlayer={false}
 		isAvailableToPutCard={null}
 		route={campaign.foes_route}
 		{campaign_type}
@@ -48,6 +49,7 @@
 		{isAvailableToTakeCard}
 	/>
 	<CampaignRoute
+		isPlayer={true}
 		isAvailableToPutCard={isAvailableToPutCard && canPutCardToRoute}
 		route={campaign.players_route}
 		{campaign_type}
