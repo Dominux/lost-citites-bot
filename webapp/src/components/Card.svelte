@@ -13,6 +13,9 @@
 </script>
 
 <div class="card card-sizes card-border-radius">
+	<h5 class="card-title">
+		{card.card_type.Rank || '🤝'}
+	</h5>
 	<img class="img card-border-radius" src={getCardSrc(card)} alt="Card" />
 	<!-- Campaign: {card.campaign}
 	<br />
@@ -24,9 +27,12 @@
 <style scoped>
 	.card {
 		text-align: center;
-		padding-top: 2vw;
 		box-shadow: 0 0 0 2px blanchedalmond;
 		background-color: black;
+	}
+
+	.card-title {
+		padding: 0.2vw;
 	}
 
 	.img {

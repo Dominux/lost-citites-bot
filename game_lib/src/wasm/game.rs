@@ -35,7 +35,7 @@ impl Game {
         let move_type = if is_continue_route {
             MoveType::ContinueCampaignRoute
         } else {
-            MoveType::ContinueCampaignRoute
+            MoveType::MakeCardFree
         };
 
         let take_card_from = if is_take_from_main_deck {

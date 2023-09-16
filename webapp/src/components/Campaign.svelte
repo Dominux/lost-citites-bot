@@ -24,14 +24,14 @@
 		)
 
 	$: if ($moveProcessStore.card?.campaign == campaign_type) {
-		const lastCardType = campaign.players_route.slice(-1)?.card_type
+		const lastCardType = campaign.players_route.slice(-1)[0]?.card_type
 		const selectedCardType = $moveProcessStore.card.card_type
 
 		if (lastCardType?.Rank) {
 			canPutCardToRoute = selectedCardType.Rank > lastCardType.Rank
+		} else {
+			canPutCardToRoute = true
 		}
-
-		canPutCardToRoute = true
 	}
 </script>
 
