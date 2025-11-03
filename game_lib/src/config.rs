@@ -35,3 +35,17 @@ impl Config {
         }
     }
 }
+
+impl Default for Config {
+    fn default() -> Self {
+        Self {
+            campaigns_amount: 5,
+            card_ranks_amount: 8,
+            handshakes_amount: 3,
+            cards_on_hand_amount: 8,
+            campaign_outcome: 20,
+            min_cards_for_bonus: 8,
+            bonus: 20,
+        }
+    }
+}

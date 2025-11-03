@@ -11,3 +11,9 @@ impl Shuffler for RandomShuffler {
         vec.shuffle(&mut rand::thread_rng())
     }
 }
+
+pub struct NotShuffler;
+
+impl Shuffler for NotShuffler {
+    fn shuffle<T>(&self, _: &mut Vec<T>) {}
+}

@@ -1,0 +1,8 @@
+[package]
+name = "arena"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+lost_cities_game_lib = { path = "../game_lib"}
+v1 = { path = "../bots/v1" }
