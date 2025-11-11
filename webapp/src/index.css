@@ -1,6 +1,12 @@
 :root {
 	--card-width: 10vw;
 	--card-height: calc(var(--card-width) * 1.618);
+
+	--white-route: #fdfbec;
+	--blue-route: #6fbad9;
+	--green-route: #abc845;
+	--yellow-route: #f7ea78;
+	--red-route: #da303b;
 }
 
 * {
@@ -14,6 +20,22 @@
 
 .card-border-radius {
 	border-radius: 10%;
+}
+
+.bg-white-route {
+	background-color: var(--white-route);
+}
+.bg-blue-route {
+	background-color: var(--blue-route);
+}
+.bg-green-route {
+	background-color: var(--green-route);
+}
+.bg-yellow-route {
+	background-color: var(--yellow-route);
+}
+.bg-red-route {
+	background-color: var(--red-route);
 }
 
 .animated {

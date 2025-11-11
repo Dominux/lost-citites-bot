@@ -3,13 +3,12 @@
 	import { PutTo, TakeFrom } from '../entities/move_process'
 	import type { Card as CardModel } from '../../pkg'
 	import Card from './Card.svelte'
+	import { getCardClass } from '../common'
 
 	export let campaign_type: number
 	export let lastCard: CardModel
 	export let isAvailableToPutCard = false
 	export let isAvailableToTakeCard = false
-
-	const campaignTypesColors = ['yellow', 'blue', 'white', 'green', 'red']
 
 	const onSelect = () => {
 		if (isAvailableToPutCard) {
@@ -39,8 +38,9 @@
 		<Card card={lastCard} />
 	{:else}
 		<div
-			class="free-cards-cover card-border-radius"
-			style={`background-color: ${campaignTypesColors[campaign_type]}`}
+			class="free-cards-cover card-border-radius {getCardClass(
+				campaign_type,
+			)}"
 		/>
 	{/if}
 </div>
@@ -49,22 +49,30 @@
 	.free-card-skeleton {
 		text-align: center;
 		margin: 2vw;
-		box-shadow: 0 0 0 2px rgba(225, 225, 225, 0.9),
-			0 0 0 8px rgba(0, 0, 0, 0.9), 0 0 0 10px rgba(225, 225, 225, 0.9);
+		box-shadow:
+			0 0 0 2px rgba(225, 225, 225, 0.9),
+			0 0 0 8px rgba(0, 0, 0, 0.9),
+			0 0 0 10px rgba(225, 225, 225, 0.9);
 	}
 
 	.available-free-cards {
-		box-shadow: 0 0 0 3px yellow, 0 0 0 8px rgba(0, 0, 0, 0.9),
+		box-shadow:
+			0 0 0 3px yellow,
+			0 0 0 8px rgba(0, 0, 0, 0.9),
 			0 0 0 10px yellow;
 	}
 
 	.put-card {
-		box-shadow: 0 0 0 3px orange, 0 0 0 8px rgba(0, 0, 0, 0.9),
+		box-shadow:
+			0 0 0 3px orange,
+			0 0 0 8px rgba(0, 0, 0, 0.9),
 			0 0 0 10px orange;
 	}
 
 	.available-to-take-card {
-		box-shadow: 0 0 0 3px lightgreen, 0 0 0 8px rgba(0, 0, 0, 0.9),
+		box-shadow:
+			0 0 0 3px lightgreen,
+			0 0 0 8px rgba(0, 0, 0, 0.9),
 			0 0 0 10px lightgreen;
 	}
 

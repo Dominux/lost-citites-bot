@@ -1,27 +1,17 @@
 <script lang="ts">
 	import type { Card as CardModel } from '../../pkg'
+	import { getCardClass } from '../common'
 
 	export let card: CardModel
-
-	const getCardSrc = (card: CardModel) => {
-		const cardPrefix = card.campaign + 1
-		const cardPostfix = card.card_type.Rank
-			? card.card_type.Rank
-			: 'handshake'
-		return `./assets/card_images/${cardPrefix}_${cardPostfix}.webp`
-	}
 </script>
 
-<div class="card card-sizes card-border-radius">
-	<h5 class="card-title">
-		{card.card_type.Rank || '🤝'}
-	</h5>
-	<img class="img card-border-radius" src={getCardSrc(card)} alt="Card" />
-	<!-- Campaign: {card.campaign}
-	<br />
-	Rank: {typeof card.card_type == 'string'
-		? card.card_type
-		: card.card_type.Rank} -->
+<div class="iphone-mockup card card-sizes card-border-radius">
+	<div class="speaker-notch">
+		<h4 style="font-weight: bold;">
+			{card.card_type.Rank || '🤝'}
+		</h4>
+	</div>
+	<div class="screen card-border-radius {getCardClass(card.campaign)}"></div>
 </div>
 
 <style scoped>
@@ -29,14 +19,37 @@
 		text-align: center;
 		box-shadow: 0 0 0 2px blanchedalmond;
 		background-color: black;
+		box-sizing: border-box;
 	}
 
-	.card-title {
-		padding: 0.2vw;
+	.iphone-mockup {
+		/* Main body of the phone */
+		position: relative;
+		background-color: #000;
+		padding: 5%; /* Padding for the screen inside the frame */
+		box-sizing: border-box;
 	}
 
-	.img {
-		max-width: 100%;
-		max-height: 100%;
+	.screen {
+		/* The actual display area */
+		width: 100%;
+		height: 100%;
+		color: #333;
+		text-align: center;
+		overflow: hidden; /* Ensures content stays within the rounded corners */
+	}
+
+	.speaker-notch {
+		/* The notch at the top */
+		position: absolute;
+		left: 50%;
+		transform: translateX(-50%);
+		min-width: 60%;
+		height: fit-content;
+		background-color: #000;
+		border-radius: 0 0 40% 40%;
+		z-index: 10;
+		display: flex;
+		justify-content: center;
 	}
 </style>
