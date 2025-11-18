@@ -7,7 +7,7 @@ pub mod entities;
 mod game_manager;
 
 pub use config::Config;
-pub use game_manager::{GameManager, GamePlayer};
+pub use game_manager::{GameManager, GameMoveParams, GamePlayer};
 
 #[cfg(not(feature = "wasm"))]
 pub mod game;
