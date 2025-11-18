@@ -5,4 +5,4 @@ edition = "2024"
 
 [dependencies]
 lost_cities_game_lib = { path = "../game_lib"}
-v1 = { path = "../bots/v1" }
+bot_v1 = { path = "../bots/v1" }

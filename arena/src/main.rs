@@ -1,5 +1,5 @@
+use bot_v1::bot::Bot;
 use lost_cities_game_lib::Config;
-use v1::bot::Bot;
 
 fn main() {
     let config = Config::default();

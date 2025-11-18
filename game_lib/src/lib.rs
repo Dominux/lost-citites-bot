@@ -4,8 +4,10 @@ use wasm_bindgen::prelude::*;
 pub mod common;
 mod config;
 pub mod entities;
+mod game_manager;
 
 pub use config::Config;
+pub use game_manager::{GameManager, GamePlayer};
 
 #[cfg(not(feature = "wasm"))]
 pub mod game;
